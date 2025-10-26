@@ -1,0 +1,23 @@
+
+<!DOCTYPE html>
+<link rel="stylesheet" href="static/edit_task.css">
+<html>
+<head>
+  <title>Edit task</title>
+<body>
+<button onclick="window.location.href='/home'">Home</button>
+<p>Edit the task with ID = {{no}}</p>
+<form action="/edit/{{no}}" method="get">
+  <input type="text" name="task" value="{{old['content']}}" size="100" maxlength="100">
+  <select name="status">
+    <option>open</option>
+    <option>closed</option>
+  </select>
+  <br>
+  <input type="submit" name="save" value="save">
+</form>
+<form action="/delete/{{no}}" method="post">
+      <input type="submit" value="Delete">
+  </form>
+</html>
+</body>

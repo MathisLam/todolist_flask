@@ -1,0 +1,14 @@
+/*csss file for make_table.html*/
+body {
+    background-color: lightblue;
+  }
+  
+  h1 {
+    color: rgb(255, 255, 255);
+    text-align: center;
+  }
+  
+  p {
+    font-family: verdana;
+    font-size: 20px;
+  }
