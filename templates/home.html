@@ -1,15 +1,88 @@
+{% extends "layout.html" %}
 
-<!DOCTYPE html>
-<link rel="stylesheet" href="static/closed_item.css">
-<html>
-<head>
-    <title>Home Page</title>
-</head>
-<body>
-    <h1>Todo list</h1>
-    <a href="/todo"><button>things todo</button></a>
-    <a href="/closed"><button>view closed itmes</button></a>
-    <a href="/new"><button>new item</button></a>
-    <a href="/logout"><button>logout</button></a>
-</body>
-</html>
+{% block title %}
+    Dashboard - {{ super() }}
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-header">
+    <h1>Your Tasks</h1>
+    <a href="{{ url_for('new_task') }}" class="button-primary">Create New Task</a>
+</div>
+
+<div class="task-board">
+    <!-- Upcoming Column -->
+    <div class="task-column">
+        <h2 class="column-title">Upcoming</h2>
+        <div class="task-list">
+            {% for task in upcoming %}
+                <div class="task-card">
+                    <h3>{{ task.content }}</h3>
+                    <div class="task-meta">
+                        {% if task.category %}
+                            <span class="task-category">{{ task.category }}</span>
+                        {% endif %}
+                        {% if task.due_date %}
+                            <span class="task-due-date">
+                                Due: {{ task.due_date.strftime('%Y-%m-%d %I:%M %p') }}
+                            </span>
+                        {% endif %}
+                    </div>
+                    <a href="{{ url_for('edit_task', task_id=task.id) }}" class="task-edit-link">Edit</a>
+                </div>
+            {% else %}
+                <p class="no-tasks">No upcoming tasks.</p>
+            {% endfor %}
+        </div>
+    </div>
+    
+    <!-- In Process Column -->
+    <div class="task-column">
+        <h2 class="column-title">In Process</h2>
+        <div class="task-list">
+            {% for task in in_process %}
+                 <div class="task-card">
+                    <h3>{{ task.category }}</h3>
+                    <div class="task-meta">
+                        {% if task.category %}
+                            <span class="task-category">{{ task.category }}</span>
+                        {% endif %}
+                        {% if task.due_date %}
+                            <span class="task-due-date">
+                                Due: {{ task.due_date.strftime('%Y-%m-%d %I:%M %p') }}
+                            </span>
+                        {% endif %}
+                    </div>
+                    <a href="{{ url_for('edit_task', task_id=task.id) }}" class="task-edit-link">Edit</a>
+                </div>
+            {% else %}
+                <p class="no-tasks">No tasks in process.</p>
+            {% endfor %}
+        </div>
+    </div>
+    
+    <!-- Completed Column -->
+    <div class="task-column">
+        <h2 class="column-title">Completed</h2>
+        <div class="task-list">
+            {% for task in completed %}
+                 <div class="task-card task-complete">
+                    <h3>{{ task.content }}</h3>
+                    <div class="task-meta">
+                         {% if task.category %}
+                            <span class="task-category">{{ task.category }}</span>
+                        {% endif %}
+                        <span class="task-due-date">
+                            Completed: {{ task.created_date.strftime('%Y-%m-%d') }}
+                        </span>
+                    </div>
+                    <a href="{{ url_for('edit_task', task_id=task.id) }}" class="task-edit-link">View/Restore</a>
+                </div>
+            {% else %}
+                <p class="no-tasks">No completed tasks.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+

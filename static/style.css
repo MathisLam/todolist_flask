@@ -1,0 +1,436 @@
+/* --- Global Styles & Variables --- */
+:root {
+    --color-bg: #f4f7f6;
+    --color-bg-secondary: #ffffff;
+    --color-border: #e0e0e0;
+    --color-text: #222222;
+    --color-text-secondary: #555555;
+    --color-primary: #007bff;
+    --color-primary-hover: #0056b3;
+    --color-danger: #dc3545;
+    --color-danger-hover: #a71d2a;
+    --font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --border-radius: 8px;
+    --shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+/* This is the "fixed" dark mode */
+body.dark {
+    --color-bg: #121212;
+    --color-bg-secondary: #1e1e1e;
+    --color-border: #333333;
+    --color-text: #f0f0f0;
+    --color-text-secondary: #aaaaaa;
+}
+
+
+body {
+    font-family: var(--font-family);
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    margin: 0;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+a {
+    color: var(--color-primary);
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+}
+
+/* --- Navbar --- */
+.navbar {
+    background-color: var(--color-bg-secondary);
+    border-bottom: 1px solid var(--color-border);
+    padding: 1rem 0;
+    box-shadow: var(--shadow);
+}
+.navbar .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+.nav-brand {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-text);
+    flex-shrink: 0;
+}
+.nav-brand:hover {
+    text-decoration: none;
+}
+
+/* Search Form */
+.search-form {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+    max-width: 500px;
+}
+.search-form input[type="search"] {
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    font-size: 1rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius) 0 0 var(--border-radius);
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    box-sizing: border-box;
+    border-right: none;
+}
+.search-form .search-button {
+    padding: 0.5rem;
+    border: 1px solid var(--color-border);
+    background-color: var(--color-bg-secondary);
+    color: var(--color-text-secondary);
+    border-radius: 0 var(--border-radius) var(--border-radius) 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.search-form .search-button:hover {
+    background-color: var(--color-bg);
+}
+
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-shrink: 0;
+}
+.nav-links a {
+    color: var(--color-text-secondary);
+    font-weight: 500;
+}
+.nav-button {
+    background-color: var(--color-primary);
+    color: #ffffff;
+    padding: 0.5rem 1rem;
+    border-radius: var(--border-radius);
+    font-weight: 500;
+}
+.nav-button:hover {
+    background-color: var(--color-primary-hover);
+    color: #ffffff;
+    text-decoration: none;
+}
+
+/* Dark mode navbar fixes */
+body.dark .nav-button {
+    background-color: var(--color-primary);
+    color: #ffffff;
+}
+body.dark .nav-button:hover {
+    background-color: var(--color-primary-hover);
+}
+body.dark .search-form input[type="search"] {
+    background-color: #333;
+    border-color: #444;
+    color: var(--color-text);
+}
+body.dark .search-form .search-button {
+    background-color: var(--color-bg-secondary);
+    border-color: #444;
+    color: var(--color-text-secondary);
+}
+body.dark .search-form .search-button:hover {
+    background-color: #333;
+}
+
+
+/* --- Main Content --- */
+main.container {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+
+/* --- Buttons --- */
+.button-primary, .button-secondary, .button-danger {
+    display: inline-block;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--border-radius);
+    font-weight: 500;
+    font-size: 1rem;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.2s, transform 0.1s ease;
+}
+
+/* This is the animation definition */
+@keyframes button-push {
+    0% { transform: scale(1); }
+    50% { transform: scale(0.95); }
+    100% { transform: scale(1); }
+}
+
+.button-primary:hover {
+    background-color: var(--color-primary-hover);
+    color: #ffffff;
+    text-decoration: none;
+}
+
+/* I've removed the animation bug you didn't like */
+.button-primary:active {
+    /* Adding a simpler :active state instead */
+    transform: scale(0.97);
+}
+
+
+.button-secondary {
+    background-color: var(--color-bg-secondary);
+    color: var(--color-text-secondary);
+    border: 1px solid var(--color-border);
+}
+.button-secondary:hover {
+    background-color: var(--color-bg);
+    text-decoration: none;
+}
+.button-danger {
+    background-color: var(--color-danger);
+    color: #ffffff;
+}
+.button-danger:hover {
+    background-color: var(--color-danger-hover);
+    color: #ffffff;
+    text-decoration: none;
+}
+
+/* Dark mode buttons */
+body.dark .button-secondary {
+    background-color: var(--color-bg-secondary);
+    color: var(--color-text-secondary);
+    border-color: var(--color-border);
+}
+body.dark .button-secondary:hover {
+    background-color: #333; /* Darker hover */
+}
+
+
+/* --- Forms --- */
+.form-container {
+    max-width: 600px;
+    margin: 1rem auto;
+    background-color: var(--color-bg-secondary);
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    border: 1px solid var(--color-border);
+}
+.styled-form .form-group {
+    margin-bottom: 1.5rem;
+}
+.styled-form label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    color: var(--color-text-secondary);
+}
+.styled-form input[type="text"],
+.styled-form input[type="password"],
+.styled-form input[type="datetime-local"],
+.styled-form select {
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius);
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    box-sizing: border-box; /* Important for width: 100% */
+}
+/* Dark mode inputs */
+body.dark .styled-form input[type="text"],
+body.dark .styled-form input[type="password"],
+body.dark .styled-form input[type="datetime-local"],
+body.dark .styled-form select {
+    background-color: #333;
+    border-color: #444;
+    color: var(--color-text);
+}
+/* Fix for dark mode date picker icon */
+body.dark input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+}
+
+.form-group-horizontal {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+.delete-form {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--color-border);
+    text-align: right;
+}
+.auth-switch {
+    text-align: center;
+    margin-top: 1.5rem;
+}
+
+/* --- Flash Messages --- */
+.flash-messages {
+    margin-bottom: 1rem;
+}
+.flash-message {
+    padding: 1rem;
+    border-radius: var(--border-radius);
+    margin-bottom: 1rem;
+    font-weight: 500;
+}
+.flash-success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+.flash-error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+/* --- Dashboard (Home Page) --- */
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+.task-board {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+}
+.task-column {
+    background-color: var(--color-bg); /* Use main bg for column */
+    border-radius: var(--border-radius);
+    padding: 1rem;
+}
+body.dark .task-column {
+    background-color: #1a1a1a;
+}
+
+.column-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--color-border);
+    margin-top: 0;
+}
+.task-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    min-height: 200px;
+}
+.task-card {
+    background-color: var(--color-bg-secondary);
+    padding: 1rem;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    border: 1px solid var(--color-border);
+}
+.task-card h3 {
+    margin: 0 0 0.75rem 0;
+    font-size: 1.1rem;
+}
+.task-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    align-items: center;
+    font-size: 0.9rem;
+    color: var(--color-text-secondary);
+    margin-bottom: 1rem;
+}
+.task-category {
+    background-color: var(--color-primary);
+    color: #ffffff;
+    font-weight: 500;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+}
+
+/* This is the style that the typo'd class 'task-complete' fails to match */
+.task-completed {
+    opacity: 0.7;
+}
+.task-completed h3 {
+    text-decoration: line-through;
+}
+.task-edit-link {
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+.no-tasks {
+    color: var(--color-text-secondary);
+    padding: 1rem;
+    text-align: center;
+}
+
+/* --- Settings Page --- */
+.danger-zone {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    border: 1px solid var(--color-danger);
+    border-radius: var(--border-radius);
+    background-color: #fef5f5;
+}
+body.dark .danger-zone {
+    background-color: #2e1c1c;
+    border-color: var(--color-danger);
+}
+.danger-zone h3 {
+    color: var(--color-danger);
+    margin-top: 0;
+}
+
+/* --- Responsive --- */
+@media (max-width: 900px) {
+    .navbar .container {
+        flex-wrap: wrap;
+        row-gap: 1rem;
+    }
+    .search-form {
+        order: 3; /* Move search bar to new line */
+        width: 100%;
+        max-width: none;
+    }
+    .nav-links {
+        order: 2;
+    }
+    .nav-brand {
+        order: 1;
+    }
+}
+
+
+@media (max-width: 768px) {
+    .task-board {
+        grid-template-columns: 1fr;
+    }
+    .dashboard-header {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: stretch;
+    }
+    .dashboard-header .button-primary {
+        text-align: center;
+    }
+}
+

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Use a modern, nice-looking font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- For search icon -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>{% block title %}Todo List Web App{% endblock %}</title>
+</head>
+<body class="{{ 'dark' if user_prefs and user_prefs.dark_mode else '' }}">
+
+    <nav class="navbar">
+        <div class="container">
+            <a class="nav-brand" href="{{ url_for('home') }}">Todo List Web App</a>
+            
+            <!-- BUG 2: Search Bar HTML -->
+            <!-- This search bar is added, pointing to the /search route -->
+            <form action="{{ url_for('search') }}" method="GET" class="search-form">
+                <input type="search" name="query" placeholder="Search tasks...">
+                <button type="submit" class="search-button">
+                    <span class="material-symbols-outlined">search</span>
+                </button>
+            </form>
+            
+            <div class="nav-links">
+                <!-- g.user_id is set by the @login_required decorator -->
+                {% if g.user_id %}
+                    <a href="{{ url_for('new_task') }}" class="nav-button">New Task</a>
+                    <a href="{{ url_for('settings') }}">Settings</a>
+                    <a href="{{ url_for('logout') }}">Logout</a>
+                {% else %}
+                    <a href="{{ url_for('auth', action='login') }}">Login</a>
+                    <a href="{{ url_for('auth', action='signup') }}" class="nav-button">Sign Up</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <main class="container">
+        <!-- Flash messages (for errors/success) -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            <div class="flash-messages">
+              {% for category, message in messages %}
+                <div class="flash-message flash-{{ category }}">{{ message }}</div>
+              {% endfor %}
+            </div>
+          {% endif %}
+        {% endwith %}
+        
+        <!-- Main content block -->
+        {% block content %}{% endblock %}
+    </main>
+    
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Todo List Web App</p>
+        </div>
+    </footer>
+
+</body>
+</html>
+

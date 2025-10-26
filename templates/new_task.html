@@ -1,11 +1,36 @@
+{% extends "layout.html" %}
 
-<!DOCTYPE html>
-<link rel="stylesheet" href="static/new_task.css">
-<body>
-<button onclick="window.location.href='/home'">Home</button>
-<p>Add a new task to the ToDo list:</p>
-<form action="/new" method="GET">
-  <input type="text" size="100" maxlength="100" name="task">
-  <input type="submit" name="save" value="save">
-</form>
-</body>
+{% block title %}
+    Create New Task - {{ super() }}
+{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <h2>Create New Task</h2>
+    
+    <form action="{{ url_for('new_task') }}" method="post" class="styled-form">
+        
+        <div class="form-group">
+            <label for="content">Task Name</label>
+            <input type="text" id="content" name="content" required placeholder="e.g., Buy milk">
+        </div>
+        
+        <div class="form-group">
+            <label for="category">Category (Class)</label>
+            <input type="text" id="category" name="category" placeholder="e.g., Personal">
+        </div>
+        
+        <div class="form-group">
+            <label for="due_date">Due Date</label>
+            <input type="datetime-local" id="due_date" name="due_date">
+        </div>
+        
+        <div class="form-group-horizontal">
+            <button type="submit" class="button-primary">Create Task</button>
+            <a href="{{ url_for('home') }}" class="button-secondary">Cancel</a>
+        </div>
+        
+    </form>
+</div>
+{% endblock %}
+

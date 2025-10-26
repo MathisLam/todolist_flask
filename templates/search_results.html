@@ -1,0 +1,52 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Search Results - {{ super() }}
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-header">
+    <h1>Search Results for "{{ query }}"</h1>
+    <a href="{{ url_for('home') }}" class="button-secondary">Back to Home</a>
+</div>
+
+<div class="task-board-single">
+    <div class="task-column">
+        <h2 class="column-title">Found Tasks</h2>
+        <div class="task-list">
+            {% for task in tasks %}
+                <div class="task-card {% if task.status == 'completed' %}task-completed{% endif %}">
+                    <h3>{{ task.content }}</h3>
+                    <div class="task-meta">
+                        {% if task.category %}
+                            <span class="task-category">{{ task.category }}</span>
+                        {% endif %}
+                        {% if task.due_date %}
+                            <span class="task-due-date">
+                                Due: {{ task.due_date.strftime('%Y-%m-%d %I:%M %p') }}
+                            </span>
+                        {% endif %}
+                         <span class="task-status">Status: {{ task.status }}</span>
+                    </div>
+                    <a href="{{ url_for('edit_task', task_id=task.id) }}" class="task-edit-link">Edit</a>
+                </div>
+            {% else %}
+                <p class="no-tasks">No tasks found matching your search.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<!-- Simple style to make this page look okay -->
+<style>
+    .task-board-single {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+    .task-status {
+        font-weight: 500;
+        text-transform: capitalize;
+    }
+</style>
+{% endblock %}
+

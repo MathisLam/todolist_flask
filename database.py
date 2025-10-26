@@ -1,87 +1,81 @@
-#Code to create the data base
-#import
 import sqlite3
+import hashlib
 import json
+from datetime import datetime
 
 # Connect to the database (or create it if it doesn't exist)
-conn = sqlite3.connect('todo.db')  # Warning: This file is created in the current directory
-
-# Enable fetching rows as dictionaries
-conn.row_factory = sqlite3.Row
-
-# Create a cursor object
+conn = sqlite3.connect('todo.db')
 c = conn.cursor()
 
-# Create the users table with a task column as a JSON dictionary
+print("Setting up database...")
+
+# --- Drop existing tables for a clean setup ---
+c.execute("DROP TABLE IF EXISTS tasks")
+c.execute("DROP TABLE IF EXISTS users")
+print("Dropped old tables.")
+
+# --- User Table ---
+# Stores user accounts and their preferences (e.g., dark mode)
 c.execute("""
 CREATE TABLE IF NOT EXISTS users (
     id INTEGER PRIMARY KEY,
     username TEXT UNIQUE NOT NULL,
     password TEXT NOT NULL,
-    task TEXT  -- This will store JSON data
+    preferences TEXT
 )
 """)
+print("Created 'users' table.")
 
-# Insert sample data into the users table
-sample_tasks = {"id": 1, "content": "Read A-byte-of-python to get a good introduction into Python", "status": 0},
-#    {"id": 2, "content": "Visit the Python website", "status": 1},
-#   {"id": 3, "content": "Test various editors for and check the syntax highlighting", "status": 1},
-#  {"id": 4, "content": "Choose your favorite WSGI-Framework", "status": 0}
-
-
-
-
-#c.execute("INSERT INTO users (username, password, task) VALUES (?, ?, ?)", 
- #         ('sample_user', 'sample_password', json.dumps(sample_tasks)))
-
-import sqlite3
-import json
-
-def insert_task(username, task):
-    # Connect to the database
-    conn = sqlite3.connect('todo.db')
-    conn.row_factory = sqlite3.Row
-    c = conn.cursor()
-
-    # Retrieve the current tasks for the user
-    c.execute("SELECT task FROM users WHERE username = ?", (username,))
-    user_tasks = c.fetchone()
-    tasks = json.loads(user_tasks['task']) if user_tasks and user_tasks['task'] else []
-
-    # Append the new task
-    tasks.append(task)
-
-    # Update the user's tasks in the database
-    c.execute("UPDATE users SET task = ? WHERE username = ?", (json.dumps(tasks), username))
-
-    # Commit the changes and close the connection
-    conn.commit()
-    conn.close()
-
-def delete_task(username, task_id):
-    # Connect to the database
-    conn = sqlite3.connect('todo.db')
-    conn.row_factory = sqlite3.Row
-    c = conn.cursor()
-
-    # Retrieve the current tasks for the user
-    c.execute("SELECT task FROM users WHERE username = ?", (username,))
-    user_tasks = c.fetchone()
-    tasks = json.loads(user_tasks['task']) if user_tasks and user_tasks['task'] else []
-
-    # Remove the task with the given id
-    tasks = [task for task in tasks if task['id'] != task_id]
-
-    # Update the user's tasks in the database
-    c.execute("UPDATE users SET task = ? WHERE username = ?", (json.dumps(tasks), username))
-
-    # Commit the changes and close the connection
-    conn.commit()
-    conn.close()
+# --- Tasks Table ---
+# Stores individual tasks, linked to a user by user_id
+c.execute("""
+CREATE TABLE IF NOT EXISTS tasks (
+    id INTEGER PRIMARY KEY,
+    user_id INTEGER NOT NULL,
+    content TEXT NOT NULL,
+    category TEXT,
+    created_date DATETIME NOT NULL,
+    due_date DATETIME,
+    status TEXT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users (id)
+)
+""")
+print("Created 'tasks' table.")
 
 
+# --- Sample User (for testing) ---
+try:
+    # Add a sample user 'test' with password 'test'
+    default_prefs = json.dumps({"dark_mode": False})
+    hashed_password = hashlib.sha256("test".encode()).hexdigest()
+    c.execute("INSERT INTO users (username, password, preferences) VALUES (?, ?, ?)",
+              ("test", hashed_password, default_prefs))
+    
+    # Get the new user's ID
+    user_id = c.lastrowid
+    
+    # --- Sample Tasks ---
+    now = datetime.now()
+    
+    c.execute("INSERT INTO tasks (user_id, content, category, created_date, due_date, status) VALUES (?, ?, ?, ?, ?, ?)",
+              (user_id, "Complete project report", "Work", now, datetime(2025, 12, 1, 17, 0), "upcoming"))
+    
+    c.execute("INSERT INTO tasks (user_id, content, category, created_date, due_date, status) VALUES (?, ?, ?, ?, ?, ?)",
+              (user_id, "Review PR #123", "Work", now, datetime(2025, 11, 20, 12, 0), "in_process"))
+              
+    c.execute("INSERT INTO tasks (user_id, content, category, created_date, status) VALUES (?, ?, ?, ?, ?)",
+              (user_id, "Buy groceries", "Personal", now, "completed"))
 
- 
+    print("Sample user 'test' (password 'test') and tasks created.")
+
+except sqlite3.IntegrityError:
+    print("Sample user 'test' already exists.")
+except Exception as e:
+    print(f"An error occurred: {e}")
+
+
 # Commit the changes and close the connection
 conn.commit()
 conn.close()
+print("Database setup complete and connection closed.")
+
