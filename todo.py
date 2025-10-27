@@ -322,8 +322,12 @@ def search():
     db = get_db()
     c = db.cursor()
     
-    c.execute("SELECT * FROM tasks WHERE user_id = ? AND lower(content) = ?", 
-              (g.user_id, query))
+    search_term = f"%{query}%"
+    c.execute("""
+        SELECT * FROM tasks 
+        WHERE user_id = ? AND 
+              (lower(content) LIKE ? OR lower(category) LIKE ?)
+    """, (g.user_id, search_term, search_term))
     
     results = c.fetchall()
     

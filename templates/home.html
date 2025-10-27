@@ -42,7 +42,7 @@
         <div class="task-list">
             {% for task in in_process %}
                  <div class="task-card">
-                    <h3>{{ task.category }}</h3>
+                    <h3>{{ task.content }}</h3>
                     <div class="task-meta">
                         {% if task.category %}
                             <span class="task-category">{{ task.category }}</span>
@@ -66,7 +66,7 @@
         <h2 class="column-title">Completed</h2>
         <div class="task-list">
             {% for task in completed %}
-                 <div class="task-card task-complete">
+                 <div class="task-card task-completed">
                     <h3>{{ task.content }}</h3>
                     <div class="task-meta">
                          {% if task.category %}
